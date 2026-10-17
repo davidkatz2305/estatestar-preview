@@ -8,8 +8,8 @@ const safeText = text => { const e = document.createElement('span'); e.textConte
 const localVideo = remote => 'assets/' + new URL(remote).pathname.split('/').pop();
 const menuToggle = $('.menu-toggle');
 const menu = $('#mobile-menu');
-function closeMenu(){menu.hidden=true;menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Menü öffnen');document.body.classList.remove('menu-open');}
-menuToggle.addEventListener('click',()=>{const open=menu.hidden;menu.hidden=!open;menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Menü schließen':'Menü öffnen');document.body.classList.toggle('menu-open',open);});
+function closeMenu(){menu.hidden=true;menuToggle.setAttribute('aria-expanded','false');menuToggle.setAttribute('aria-label','Menü öffnen');document.body.classList.remove('menu-open');$('main').inert=false;$('.section-nav').inert=false;}
+menuToggle.addEventListener('click',()=>{const open=menu.hidden;menu.hidden=!open;menuToggle.setAttribute('aria-expanded',String(open));menuToggle.setAttribute('aria-label',open?'Menü schließen':'Menü öffnen');document.body.classList.toggle('menu-open',open);$('main').inert=open;$('.section-nav').inert=open;});
 $$('a',menu).forEach(a=>a.addEventListener('click',closeMenu));
 menu.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenu();menuToggle.focus();}if(e.key==='Tab'){const list=[menuToggle,...$$('a',menu)];const i=list.indexOf(document.activeElement);if(e.shiftKey&&i===0){e.preventDefault();list.at(-1).focus();}else if(!e.shiftKey&&i===list.length-1){e.preventDefault();menuToggle.focus();}}});
 matchMedia('(min-width: 761px)').addEventListener('change',e=>{if(e.matches)closeMenu();});
@@ -33,9 +33,9 @@ function showImage(i){currentImage=(i+dialogPhotos.length)%dialogPhotos.length;c
 $('#photo-gallery').addEventListener('click',e=>{const b=e.target.closest('[data-photo]');if(!b)return;dialogPhotos=[...activePhotos];openDialog(dialogPhotos[Number(b.dataset.photo)].title);showImage(Number(b.dataset.photo));});
 $('#media-prev').addEventListener('click',()=>showImage(currentImage-1));$('#media-next').addEventListener('click',()=>showImage(currentImage+1));
 dialog.addEventListener('keydown',e=>{if(!$('.dialog-bottom').hidden&&e.key==='ArrowRight'){e.preventDefault();showImage(currentImage+1);}if(!$('.dialog-bottom').hidden&&e.key==='ArrowLeft'){e.preventDefault();showImage(currentImage-1);}});
-function showVideo(src,title){openDialog(title);$('.dialog-bottom').hidden=true;const video=document.createElement('video');video.src=src;video.controls=true;video.playsInline=true;video.preload='metadata';video.setAttribute('aria-label',title);$('#media-body').replaceChildren(video);video.play().catch(()=>{});}
-$('#film-gallery').addEventListener('click',e=>{const b=e.target.closest('[data-film]');if(b){const film=data.films[Number(b.dataset.film)];showVideo(localVideo(film.link),film.title);}});
-$('[data-lab-film]').addEventListener('click',()=>showVideo('assets/Digital-Lab-Virtual-Staging-Renovation-CGI-3D-Modelling-Immobilie-Real-Estate-16x9_Comp.mp4','Digital Lab · Virtual Staging, Renovierung & CGI'));
+function showVideo(src,title,poster){openDialog(title);$('.dialog-bottom').hidden=true;const video=document.createElement('video');video.src=src;if(poster)video.poster=poster;video.controls=true;video.playsInline=true;video.preload='metadata';video.setAttribute('aria-label',title);$('#media-body').replaceChildren(video);video.play().catch(()=>{});}
+$('#film-gallery').addEventListener('click',e=>{const b=e.target.closest('[data-film]');if(b){const film=data.films[Number(b.dataset.film)];showVideo(localVideo(film.link),film.title,film.image);}});
+$('[data-lab-film]').addEventListener('click',()=>showVideo('assets/Digital-Lab-Virtual-Staging-Renovation-CGI-3D-Modelling-Immobilie-Real-Estate-16x9_Comp.mp4','Digital Lab · Virtual Staging, Renovierung & CGI','assets/Digitallab_fallback.webp'));
 
 let selectedTour=0;
 $('#tour-picker').innerHTML=data.tours.map((p,i)=>`<button data-tour="${i}" aria-pressed="${i===0}">${safeText(p.title.replace(' 360',''))}</button>`).join('');
@@ -64,3 +64,5 @@ document.addEventListener('visibilitychange',updateVideo);reduced.addEventListen
 $('#snap-toggle').addEventListener('click',e=>{const off=document.documentElement.classList.toggle('no-snap');e.currentTarget.setAttribute('aria-pressed',String(!off));e.currentTarget.textContent='Einrasten: '+(off?'aus':'an');});
 matchMedia('(max-width:760px)').addEventListener('change',()=>{if(!videoLoaded)return;heroVideo.classList.remove('ready');videoLoaded=false;updateVideo();});
 motionButton.addEventListener('click',()=>heroVideo.classList.toggle('user-enabled',!userPaused));
+
+document.addEventListener('keydown',e=>{if(menu.hidden||e.defaultPrevented)return;if(e.key==='Escape'){closeMenu();menuToggle.focus();}if(e.key==='Tab'){const list=[menuToggle,...$$('a',menu)];if(e.shiftKey&&document.activeElement===menuToggle){e.preventDefault();list.at(-1).focus();}else if(!e.shiftKey&&document.activeElement===list.at(-1)){e.preventDefault();menuToggle.focus();}}});
