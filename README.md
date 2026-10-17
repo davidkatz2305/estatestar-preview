@@ -1,33 +1,33 @@
-# ESTATESTAR – responsive Website-Vorschau
+# ESTATESTAR – Originalkopie, Schritt 1
 
-Statische, eigenständig lauffähige Vorschau mit originalem ESTATESTAR-Material, acht vertikalen Abschnitten, nativem Scroll Snap auf Desktop und Mobil sowie einer zusätzlichen KI-Sektion. Stand: 18.10.2026.
+Stand: 18.10.2026. Diese Testseite bildet den öffentlich erreichbaren Auftritt von https://estatestar.de/ nach. Davids Korrektur ist maßgeblich: zuerst die bestehende Website vollständig übernehmen, anschließend einzelne Elemente gezielt verbessern. Der vorherige Neuentwurf ist durch diese Originalkopie ersetzt; er bleibt in der Git-Historie und lokal unter `research/entwurf-vor-originalabgleich/` erhalten.
+
+## Umfang
+
+14 deutsche und englische Seiten: Startseite, vier Foto-Unterseiten je Sprache sowie Impressum und Datenschutz. Originales HTML, CSS, Schriften, Bilder und Frontend-Skripte erhalten Anordnung, Typografie, Abstände, responsive Varianten, Filter, Foto-Slider, Film-Lightbox, Team-Effekte und Menüs. Die visuellen Assets werden lokal ausgeliefert. Externe 360-Touren bleiben bei Matterport/MPskin.
+
+Keine neue Gestaltung, keine KI-Sektion und kein zusätzliches magnetisches Einrasten in dieser Ausgangsfassung. Diese Änderungen gehören zu Schritt 2 und sollen einzeln vergleichbar umgesetzt werden.
 
 ## Betrieb
 
-Kein Build, keine Installation: `index.html`, `styles.css`, `app.js`, `data.js`, `assets/` und `docs/` werden direkt ausgeliefert. GitHub Pages: Branch `main`, Verzeichnis `/`. `.nojekyll` verhindert unnötige Verarbeitung. Die Testseite besitzt `noindex,nofollow` und keine eigene Domain-Konfiguration.
+GitHub Pages: `main`, Verzeichnis `/`, `.nojekyll`. Vorschau: https://davidkatz2305.github.io/estatestar-preview/
 
-Lokal: `python3 -m http.server 8766 --bind 127.0.0.1` im Projektordner.
+Alle lokalen URLs verwenden den Projektpfad `/estatestar-preview/`. Zur lokalen Prüfung den übergeordneten Ordner mit `python3 -m http.server 8766 --bind 127.0.0.1` bereitstellen und `http://127.0.0.1:8766/estatestar-preview/` aufrufen.
 
-## Inhalte und Funktionen
+`index.html` und die Unterordner enthalten die statischen Seiten. `wp-content/` und `wp-includes/` enthalten die übernommenen öffentlichen Frontend-Dateien. `scripts/mirror-original.py` dokumentiert den Import; Rohsnapshots und Prüfungen liegen im nicht veröffentlichten Verzeichnis `research/original-mirror/`.
 
-- Logo, Originalfotografien, Filmvorschauen, Filme und Team stammen von der öffentlich erreichbaren Website estatestar.de. 117 Fotografien, 18 Filmeinträge (17 unterschiedliche Filme), sechs externe Rundgänge.
-- Bilder sind als WebP optimiert, die Galerie öffnet große Ansichten mit Tastaturbedienung.
-- Portfolio-Videos liegen als 1280×720 H.264/AAC-Versionen vor; Dauer, Bildformat und Bildrate bleiben erhalten. Größere Originaldownloads sind außerhalb des Repositorys lokal gesichert.
-- Der Hintergrundfilm wählt Hoch-/Querformat, pausiert außerhalb des sichtbaren Abschnitts und respektiert reduzierte Bewegung. Der Nutzer kann die Wiedergabe steuern.
-- Rundgänge werden erst nach Klick von Matterport/MPskin geladen. Ihre interaktiven Inhalte werden dort weiterhin gehostet.
-- Kontakt öffnet ein E-Mail-Programm. Kein Formularserver und keine automatische Übermittlung.
-- Die KI-Angebote sind ausdrücklich Leistungsentwürfe. Bestehende Originalfotos dienen als mögliches Ausgangsmaterial; sie sind keine KI-Referenzen.
+## Grenzen der Testkopie
 
-## Bearbeiten
+- Das ursprüngliche WordPress-/Elementor-Backend ist nicht zugänglich. Diese Kopie ist eine eigenständige statische Website, kein importiertes Elementor-Projekt.
+- Das Kontaktformular sieht aus wie im Original. `preview-guard.js` verhindert jede Formularübermittlung und zeigt beim Absenden einen Hinweis mit der Kontaktadresse. Telefon und E-Mail-Links funktionieren.
+- Die 17 Portfoliofilme werden aus den bereits erstellten 720p-Testdateien abgespielt, damit alle Dateien unter GitHubs Einzeldateigrenze bleiben. Inhalt, Dauer und Bildrate bleiben erhalten. Originale liegen lokal unter `research/originale-und-pruefung/original-videos/`. Die Showreels und Digital-Lab-Hintergründe verwenden die Originalfassungen.
+- Die Originaldatei `EurostileExtended.ttf` antwortet bereits auf estatestar.de mit 404. Die gleichen vorhandenen Schrift-Alternativen greifen auch hier. Es wurde keine Ersatzgestaltung eingeführt.
+- Alle Seiten tragen `noindex,nofollow`. Die rechtlichen Texte wurden als Teil der Originalkopie unverändert übernommen; eine Anpassung an den späteren Produktivbetrieb ist ein eigener Schritt.
 
-Inhalte: `index.html`; Gestaltung und Breakpoints: `styles.css`; Verhalten: `app.js`; Portfoliozuordnung: `data.js`. Native Scroll-Snap-Punkte liegen auf `.panel`. Keine blockierenden Wheel- oder Touch-Handler. Höhere Abschnitte bleiben innerhalb ihrer Grenzen scrollbar. Im Footer lässt sich Einrasten deaktivieren. Bilder und Texte behalten ihre natürliche Höhe.
+## Prüfung
 
-## Dokumentation
-
-`docs/analyse.html` enthält Ausgangsbefunde, Änderungen, KI-Empfehlungen, Primärquellen und Grenzen. `docs/datenschutz.html` beschreibt die Technik der Testseite.
-
-Eine spätere Elementor-Übernahme erfordert einen gesonderten Umsetzungsschritt. Alternativ kann diese statische Seite auf geeigneten Webspace übernommen werden. Der bestehende Strato-Auftritt wird durch dieses Repository nicht geändert.
+14 HTML-Seiten und 150 eingebettete Skripte syntaktisch geprüft; keine fehlenden direkt verlinkten lokalen Dateien und keine internen Seitenlinks zurück zum Live-Auftritt. Im Browser geprüft: Desktop 1440×900, Mobil 390×844, Tablet 820×1180; Foto-Filter, Navigation, Foto-Unterseite, Video-Lightbox, mobile Hintergrundwiedergabe und unterbundener Formularversand. Abschnittsmaße mit dem Original verglichen. Bildschirmnachweise und Prüfprotokolle liegen unter `research/`.
 
 ## Rechte
 
-Portfolio, Marke, Fotos, Filme und Porträts: ESTATESTAR bzw. jeweilige Rechteinhaber. Veröffentlichung ausschließlich als vom Auftraggeber autorisierte ESTATESTAR-Testseite. Die lokal bereitgestellte Michroma-Schrift stammt aus der Originalwebsite; siehe `assets/OFL-Michroma.txt`.
+Marke, Portfolio, Fotos, Filme und Porträts: ESTATESTAR bzw. die jeweiligen Rechteinhaber. Die öffentliche Testkopie ist vom Auftraggeber autorisiert. Originale Lizenzhinweise in Drittanbieterdateien bleiben erhalten. Die produktive Strato-Website wird nicht verändert.
